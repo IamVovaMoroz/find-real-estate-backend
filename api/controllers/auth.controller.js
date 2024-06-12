@@ -42,7 +42,7 @@ export const login = async (req, res) => {
   const { username, password } = req.body
 
   try {
-    // Check if the user exists
+    // Check if the user exists.
     const user = await prisma.user.findUnique({
       where: { username }
     })
