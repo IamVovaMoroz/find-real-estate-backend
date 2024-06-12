@@ -2,9 +2,10 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth.route.js'
 import postRouter from './routes/post.route.js'
-
+import dotenv from 'dotenv';
 
 const app = express()
+dotenv.config();
 
 app.use(express.json())
 app.use(cookieParser())
