@@ -2,11 +2,11 @@
   "name": "find-real-estate-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "console-ninja node --env-file .env watch api/app.js",
+    "start": "node api/app.js",
     "dev": "nodemon api/app.js"
   },
   "keywords": [],
