@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth.route.js'
 import postRouter from './routes/post.route.js'
 import dotenv from 'dotenv';
-
+//app
 const app = express()
 dotenv.config();
 
