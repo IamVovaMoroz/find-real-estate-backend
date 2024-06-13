@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js && npx prisma generate",
+    "start": "prisma generate && node app.js",
     "dev": "nodemon app.js",
     "build": "npm install"
   },
