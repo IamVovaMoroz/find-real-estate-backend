@@ -67,13 +67,15 @@ export const login = async (req, res) => {
     //   res.setHeader('Set-Cookie', 'test=' + 'myValue')
 	console.log("Generated JWT Token login:", token)
 
+	const {password: userPassword, ...userInfo} =  user
+
     res.cookie('token', token, {
       httpOnly: true,
 	  sameSite: 'strict', // Helps prevent CSRF attacks
       maxAge: age
     //   secure: true
     })
-    res.status(200).json({ message: 'Login successful' }) // Respond if login is successful
+    res.status(200).json(userInfo) // Respond if login is successful
   } catch (err) {
     console.log(err)
     res.status(500).json({ message: 'Failed to login!' }) // Respond if there is a server error
