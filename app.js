@@ -1,8 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import authRouter from './routes/auth.route.js'
-import postRouter from './routes/post.route.js'
+import authRouter from './api/routes/auth.route.js'
+import postRouter from './api/routes/post.route.js'
 import dotenv from 'dotenv';
 
 const app = express()
