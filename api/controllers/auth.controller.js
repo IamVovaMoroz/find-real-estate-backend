@@ -61,8 +61,10 @@ export const login = async (req, res) => {
 	const age = 24 * 60 * 60 * 1000 // 1 day in milliseconds
 
 	const token = jwt.sign({
-		id: user.id
-	}, process.env.JWT_SECRET_KEY, {expiresIn: age})
+		id: user.id,
+		isAdmin: false,
+	},
+	 process.env.JWT_SECRET_KEY, {expiresIn: age})
     // Generate cookie token and send to the user
     //   res.setHeader('Set-Cookie', 'test=' + 'myValue')
 	console.log("Generated JWT Token login:", token)
