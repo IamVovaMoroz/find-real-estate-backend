@@ -27,10 +27,9 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const id = req.params.id
   const tokenUserId = req.userId
-  const {password, ...inputs} = req.body
+  const {password, avatar, ...inputs} = req.body
 
-  console.log('req.params.id:', id)
-  console.log('req.cookies.token:', tokenUserId)
+ 
   if (id !== tokenUserId) {
     return res.status(403).json({ message: 'Not Authorized' })
   }
@@ -45,11 +44,14 @@ export const updateUser = async (req, res) => {
       where: { id },
       data: {
         ...inputs,
-        ...(updatedPassword && {password: updatedPassword})
+        ...(updatedPassword && {password: updatedPassword}),
+        ...(avatar && {avatar})
       },
     })
 
-    return res.status(200).json(updatedUser)
+    const {password:userPassword, ...rest} = updatedUser
+
+    return res.status(200).json(rest)
   } catch (err) {
     console.log(err)
     res.status(500).json({ message: 'Failed to update user!' })
@@ -57,7 +59,19 @@ export const updateUser = async (req, res) => {
 }
 
 export const deleteUser = async (req, res) => {
+  const id = req.params.id
+  const tokenUserId = req.userId
+
+ 
+  if (id !== tokenUserId) {
+    return res.status(403).json({ message: 'Not Authorized' })
+  }
   try {
+    await prisma.user.delete({
+      where:{id}
+    })
+     
+    return res.status(200).json({message:"User deleted"})
   } catch (err) {
     console.log(err)
     res.status(500).json({ message: 'Failed to get users!' })
