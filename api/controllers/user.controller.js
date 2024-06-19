@@ -81,7 +81,7 @@ export const deleteUser = async (req, res) => {
 
     console.log(err)
     res.status(500).json({ message: 'Failed to get users!' })
-=======
+
     console.error('Error retrieving user by id:', err); 
     res.status(500).json({ message: 'Failed to retrieve user!', error: err.message }); 
 
