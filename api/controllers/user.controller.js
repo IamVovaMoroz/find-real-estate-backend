@@ -6,8 +6,13 @@ export const getUsers = async (req, res) => {
     const users = await prisma.user.findMany()
     res.status(200).json(users)
   } catch (err) {
+
     console.log(err)
     res.status(500).json({ message: 'Failed to get users!' })
+
+    console.error('Error retrieving users:', err);
+    res.status(500).json({ message: 'Failed to retrieve users!', error: err.message }); 
+
   }
 }
 
@@ -73,7 +78,12 @@ export const deleteUser = async (req, res) => {
      
     return res.status(200).json({message:"User deleted"})
   } catch (err) {
+
     console.log(err)
     res.status(500).json({ message: 'Failed to get users!' })
+=======
+    console.error('Error retrieving user by id:', err); 
+    res.status(500).json({ message: 'Failed to retrieve user!', error: err.message }); 
+
   }
 }
