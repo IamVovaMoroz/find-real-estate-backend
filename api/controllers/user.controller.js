@@ -5,8 +5,8 @@ export const getAllUsers = async (req, res) => {
     const users = await prisma.user.findMany();
     res.status(200).json(users);
   } catch (err) {
-    console.error('Error retrieving users:', err); // Вывод ошибки в консоль
-    res.status(500).json({ message: 'Failed to retrieve users!', error: err.message }); // Отправка ошибки клиенту
+    console.error('Error retrieving users:', err);
+    res.status(500).json({ message: 'Failed to retrieve users!', error: err.message }); 
   }
 };
 
@@ -24,7 +24,7 @@ export const getUserById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
-    console.error('Error retrieving user by id:', err); // Вывод ошибки в консоль
-    res.status(500).json({ message: 'Failed to retrieve user!', error: err.message }); // Отправка ошибки клиенту
+    console.error('Error retrieving user by id:', err); 
+    res.status(500).json({ message: 'Failed to retrieve user!', error: err.message }); 
   }
 };
