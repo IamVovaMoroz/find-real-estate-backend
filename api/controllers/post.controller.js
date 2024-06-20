@@ -2,7 +2,17 @@ import prisma from '../lib/prisma.js'
 
 export const getPosts = async (req, res) => {
   try {
-    const posts = await prisma.post.findMany()
+    const posts = await prisma.post.findMany({
+		include: {
+		  postDetail: true,
+		  user: {
+			select: {
+			  username: true,
+			  avatar: true,
+			},
+		  },
+		},
+	  })
     res.status(200).json(posts)
   } catch (err) {
     console.log(err)
@@ -66,7 +76,8 @@ export const deletePost = async (req, res) => {
   const tokenUserId = req.userId
 
   try {
-    const post = await prisma.post.findUnique({ where: { id } })
+    const post = await prisma.post.findUnique({ where: { id },
+		include: { postDetail: true } })
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' })
@@ -74,7 +85,13 @@ export const deletePost = async (req, res) => {
 
     if (post.userId !== tokenUserId) {
       return res.status(403).json({ message: 'Not Authorized' })
+
+	  
     }
+
+	if (post.postDetail) {
+		await prisma.postDetail.delete({ where: { id: post.postDetail.id } });
+	  }
 
     await prisma.post.delete({ where: { id } })
 
