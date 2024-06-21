@@ -17,15 +17,15 @@ datasource db {
 
 model Post {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  price      Int
+  title      String?
+  price      Int?
   images     String[]
-  address    String
-  city       String
-  bedroom    Int
-  bathroom   Int
-  latitude   String
-  longitude  String
+  address    String?
+  city       String?
+  bedroom    Int?
+  bathroom   Int?
+  latitude   String?
+  longitude  String?
   type       Type
   property   Property
   createdAt  DateTime    @default(now())
