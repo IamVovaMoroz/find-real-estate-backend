@@ -22,17 +22,45 @@ import prisma from '../lib/prisma.js'
 // 	}
 //   };
 
+// export const getPosts = async (req, res) => {
+
+// 	const query = req.query
+
+//   try {
+//     const posts = await prisma.post.findMany({
+// 		include: {
+// 		  postDetail: true,
+// 		  user: {
+// 			select: {
+// 			  username: true,
+// 			  avatar: true,
+// 			},
+// 		  },
+// 		},
+// 	  })
+//     res.status(200).json(posts)
+//   } catch (err) {
+//     console.log(err)
+//     res.status(500).json({ message: 'Failed to get posts' })
+//   }
+// }
 export const getPosts = async (req, res) => {
+
+	const query = req.query
+	
   try {
     const posts = await prisma.post.findMany({
-		include: {
-		  postDetail: true,
-		  user: {
-			select: {
-			  username: true,
-			  avatar: true,
-			},
-		  },
+		where: {
+		city: query.city || undefined,
+		city: query.type || undefined,
+		property: query.property || undefined,
+		bedroom: parseInt(query.bedroom) || undefined,
+		price: {
+			gte: parseInt(query.minPrice) || 0,
+			lte: parseInt(query.maxPrice) || 10000000,
+		}
+
+
 		},
 	  })
     res.status(200).json(posts)
