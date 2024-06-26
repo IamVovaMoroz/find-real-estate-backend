@@ -6,6 +6,8 @@ import postRouter from './api/routes/post.route.js'
 import dotenv from 'dotenv';
 import userRouter from './api/routes/user.route.js';
 import testRouter from './api/routes/test.route.js'
+import chatRoute from './api/routes/chat.route.js'
+import messageRoute from './api/routes/message.route.js'
 
 const app = express()
 dotenv.config();
@@ -17,7 +19,9 @@ app.use(cookieParser())
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
-app.use('/api/test', testRouter);
+app.use('/api/test', testRouter)
+app.use("/api/chats", chatRoute)
+app.use("/api/messages", messageRoute)
 
 
 app.listen(8800, ()=>{

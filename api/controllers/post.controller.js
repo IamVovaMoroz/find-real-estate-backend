@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js'
+import jwt from "jsonwebtoken";
 // export const getPosts = async (req, res) => {
 // 	try {
 // 		const posts = await prisma.post.findMany({
@@ -71,27 +72,44 @@ export const getPosts = async (req, res) => {
 }
 
 export const getPost = async (req, res) => {
-  const id = req.params.id
-  try {
-    const post = await prisma.post.findUnique({ where: { id }, include: {
-		postDetail: true,
-		user: {
-			select:{
-				username: true,
-				avatar: true
-			}
-		}
+	const id = req.params.id;
+	try {
+	  const post = await prisma.post.findUnique({
+		where: { id },
+		include: {
+		  postDetail: true,
+		  user: {
+			select: {
+			  username: true,
+			  avatar: true,
+			},
+		  },
+		},
+	  });
+  
+	  const token = req.cookies?.token;
+  
+	  if (token) {
+		jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+		  if (!err) {
+			const saved = await prisma.savedPost.findUnique({
+			  where: {
+				userId_postId: {
+				  postId: id,
+				  userId: payload.id,
+				},
+			  },
+			});
+			res.status(200).json({ ...post, isSaved: saved ? true : false });
+		  }
+		});
+	  }
+	  res.status(200).json({ ...post, isSaved: false });
+	} catch (err) {
+	  console.log(err);
+	  res.status(500).json({ message: "Failed to get post" });
 	}
-	
-	
-	})
-    res.status(200).json(post)
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({ message: 'Failed to get post' })
-  }
-}
-
+  };
 
 export const addPost = async (req, res) => {
 	const body = req.body;
@@ -115,37 +133,6 @@ export const addPost = async (req, res) => {
 	}
   };
 
-// export const addPost = async (req, res) => {
-// 	const { postData, postDetail } = req.body;
-// 	const tokenUserId = req.userId;
-  
-// 	try {
-// 	  const newPost = await prisma.post.create({
-// 		data: {
-// 		  ...postData,
-// 		  userId: tokenUserId, 
-// 		  postDetail: {
-// 			create: postDetail,
-// 		  },
-// 		  user: { connect: { id: tokenUserId } }, 
-// 		},
-// 		include: {
-// 		  postDetail: true,
-// 		  user: {
-// 			select: {
-// 			  username: true,
-// 			  avatar: true,
-// 			},
-// 		  },
-// 		},
-// 	  });
-// 	  res.status(200).json(newPost);
-// 	} catch (err) {
-// 	  console.error('Error creating post:', err); 
-// 	  res.status(500).json({ message: 'Failed to create post' });
-// 	}
-//   };
-  
   
 export const updatePost = async (req, res) => {
   try {
