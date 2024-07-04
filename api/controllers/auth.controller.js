@@ -13,7 +13,7 @@ export const register = async (req, res) => {
     })
 
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already in use!' }) // Respond if email is already in use
+      return res.status(400).json({ message: 'Email already in use!' }) 
     }
     // hash password
 
@@ -48,14 +48,14 @@ export const login = async (req, res) => {
     })
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid Credentials!' }) // Respond if user does not exist
+      return res.status(401).json({ message: 'Invalid Credentials!' }) 
     }
 
     // Check if the user's password is correct
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid Credentials!' }) // Respond if password is incorrect
+      return res.status(401).json({ message: 'Invalid Credentials!' }) 
     }
 
 	const age = 24 * 60 * 60 * 1000 // 1 day in milliseconds
@@ -77,10 +77,10 @@ export const login = async (req, res) => {
       maxAge: age
     //   secure: true
     })
-    res.status(200).json(userInfo) // Respond if login is successful
+    res.status(200).json(userInfo) 
   } catch (err) {
     console.log(err)
-    res.status(500).json({ message: 'Failed to login!' }) // Respond if there is a server error
+    res.status(500).json({ message: 'Failed to login!' }) 
   }
 }
 
